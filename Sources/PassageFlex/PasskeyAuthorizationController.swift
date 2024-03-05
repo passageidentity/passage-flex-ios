@@ -3,7 +3,7 @@ import AuthenticationServices
 @available(iOS 16.0, *)
 @available(macOS 12.0, *)
 @available(tvOS 16.0, *)
-internal class PasskeyService:
+internal class PasskeyAuthorizationController:
     NSObject,
     ASAuthorizationControllerDelegate,
     ASAuthorizationControllerPresentationContextProviding
@@ -114,10 +114,8 @@ internal class PasskeyService:
         switch authorization.credential {
         case let registrationCredential as ASAuthorizationPlatformPublicKeyCredentialRegistration:
             registrationCredentialContinuation?.resume(returning: registrationCredential)
-            registrationCredentialContinuation = nil
         case let assertionCredential as ASAuthorizationPlatformPublicKeyCredentialAssertion:
             assertionCredentialContinuation?.resume(returning: assertionCredential)
-            assertionCredentialContinuation = nil
         default:
             ()
         }
@@ -127,12 +125,20 @@ internal class PasskeyService:
         controller: ASAuthorizationController,
         didCompleteWithError error: Error
     ) {
-        
+        var passageError = PassagePasskeyAuthorizationError.unknown
+        if let authError = error as? ASAuthorizationError {
+            if authError.code == .canceled {
+                passageError = .userCanceled
+            } else if authError.code == .failed {
+                passageError = .failed
+            }
+        }
+        assertionCredentialContinuation?.resume(throwing: passageError)
     }
     
     // MARK: - ASAuthorizationControllerPresentationContextProviding Methods
     
-    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+    internal func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
         return passkeyAutoFillWindow ?? PasskeyAutoFillWindow()
     }
     
