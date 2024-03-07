@@ -1,4 +1,4 @@
-import Foundation
+import AuthenticationServices
 
 internal struct Utilities {
     
@@ -43,4 +43,67 @@ internal struct Utilities {
         return appId
     }
     
+    internal static func convertRegistrationStartResponse(
+        _ response: RegisterWebAuthnStartWithTransactionResponse
+    ) throws -> PasskeyRegistrationData {
+        guard
+            let publicKey = response.handshake.challenge.publicKey,
+            let rpId = publicKey.rp?.id,
+            let challenge = publicKey.challenge?.decodeBase64UrlSafeString(),
+            let user = publicKey.user,
+            let userId = user.id,
+            let userName = user.name
+        else {
+            // TODO: Better error
+            throw PassagePasskeyAuthorizationError.unknown
+        }
+        return PasskeyRegistrationData(
+            relyingPartyIdentifier: rpId,
+            challenge: challenge,
+            userName: userId,
+            userId: Data(userId.utf8)
+        )
+    }
+    
+    @available(iOS 15.0, *)
+    internal static func convertRegistrationCredential(
+        _ credential: ASAuthorizationPlatformPublicKeyCredentialRegistration
+    ) throws -> CredentialCreationResponse1 {
+        let response = CredentialCreationResponseResponse(
+            attestationObject: credential.rawAttestationObject?.encodeBase64UrlSafeString(),
+            clientDataJSON: credential.rawClientDataJSON.encodeBase64UrlSafeString()
+        )
+        let credentialId = credential.credentialID.encodeBase64UrlSafeString()
+        return CredentialCreationResponse1(
+            id: credentialId,
+            rawId: credentialId,
+            response: response,
+            type: "public-key"
+        )
+    }
+    
+}
+
+extension String {
+    func decodeBase64UrlSafeString() -> Data? {
+        var base64 = self
+            .replacingOccurrences(of: "-", with: "+")
+            .replacingOccurrences(of: "_", with: "/")
+        if base64.count % 4 != 0 {
+            base64.append(
+                String(repeating: "=", count: 4 - base64.count % 4)
+            )
+        }
+        return Data(base64Encoded: base64)
+    }
+}
+
+extension Data {
+    func encodeBase64UrlSafeString() -> String {
+        return self
+            .base64EncodedString()
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+            .replacingOccurrences(of: "=", with: "")
+    }
 }

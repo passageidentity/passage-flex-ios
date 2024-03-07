@@ -6,13 +6,41 @@ public struct PassageFlex {
         
         public static let isSupported = Utilities.deviceOSSupportsPasskeys
         
-        public static func register(with transactionId: String) async throws -> String {
+        @available(iOS 16.0, *)
+        public static func register(
+            with transactionId: String,
+            authenticatorAttachment: AuthenticatorAttachment? = nil
+        ) async throws -> String {
+            // Get Passage App ID from Passage.plist
             let appId = try Utilities.getAppId()
-            // let challenge = POST /v1/apps/{app_id}/register/transactions/webauthn/start with transactionId
-            // let handshake = PasskeyService.registrationRequest(challenge)
-            // let result = POST /v1/apps/{app_id}/register/transactions/webauthn/finish with handshake
-            // return result.nonce
-            return ""
+            // Request a Registration Start Handshake from Passage server
+            let startRequest = RegisterWebAuthnStartWithTransactionRequest(
+                transactionId: transactionId,
+                authenticatorAttachment: authenticatorAttachment
+            )
+            let startResponse = try await RegisterAPI.registerWebauthnStartWithTransaction(
+                appId: appId,
+                registerWebAuthnStartWithTransactionRequest: startRequest
+            )
+            // Use the Registration Start Handshake to prompt the app user to create a passkey
+            let registrationData = try Utilities.convertRegistrationStartResponse(startResponse)
+            let authController = PasskeyAuthorizationController()
+            let credential = try await authController.requestPasskeyRegistration(
+                registrationData: registrationData
+            )
+            // Send the new Credential Handshake Response to Passage server
+            let handshakeResponse = try Utilities.convertRegistrationCredential(credential)
+            let finishRequest = RegisterWebAuthnFinishWithTransactionRequest(
+                handshakeId: startResponse.handshake.id,
+                handshakeResponse: handshakeResponse,
+                transactionId: startRequest.transactionId
+            )
+            let finishResponse = try await RegisterAPI.registerWebauthnFinishWithTransaction(
+                appId: appId,
+                registerWebAuthnFinishWithTransactionRequest: finishRequest
+            )
+            // If successful, Passage server will return a nonce.
+            return finishResponse.nonce
         }
         
         public static func authenticate(with transactionId: String? = nil) async throws -> String {

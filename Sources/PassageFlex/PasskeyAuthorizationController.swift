@@ -1,5 +1,12 @@
 import AuthenticationServices
 
+internal struct PasskeyRegistrationData {
+    let relyingPartyIdentifier: String
+    let challenge: Data
+    let userName: String
+    let userId: Data
+}
+
 @available(iOS 16.0, *)
 @available(macOS 12.0, *)
 @available(tvOS 16.0, *)
@@ -26,19 +33,16 @@ internal class PasskeyAuthorizationController:
     private var passkeyAutoFillWindow: PasskeyAutoFillWindow?
     
     internal func requestPasskeyRegistration(
-        relyingPartyIdentifier: String,
-        challenge: Data,
-        userName: String,
-        userId: String
+        registrationData: PasskeyRegistrationData
     ) async throws -> ASAuthorizationPlatformPublicKeyCredentialRegistration {
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(
-            relyingPartyIdentifier: relyingPartyIdentifier
+            relyingPartyIdentifier: registrationData.relyingPartyIdentifier
         )
         let registrationRequest = publicKeyCredentialProvider
             .createCredentialRegistrationRequest(
-                challenge: challenge,
-                name: userName,
-                userID: Data(userId.utf8)
+                challenge: registrationData.challenge,
+                name: registrationData.userName,
+                userID: registrationData.userId
             )
         let authController = ASAuthorizationController(
             authorizationRequests: [ registrationRequest ]
