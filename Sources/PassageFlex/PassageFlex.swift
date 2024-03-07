@@ -43,14 +43,37 @@ public struct PassageFlex {
             return finishResponse.nonce
         }
         
+        @available(iOS 16.0, *)
         public static func authenticate(with transactionId: String? = nil) async throws -> String {
+            // Get Passage App ID from Passage.plist
             let appId = try Utilities.getAppId()
-            // let challenge = POST /v1/apps/{app_id}/register/transactions/authenticate/start with transactionId
-            // let credentialId = method for parsing challenge for credential id
-            // let handshake = PasskeyService.assertionRequest(challenge)
-            // let result = POST /v1/apps/{app_id}/register/transactions/authenticate/finish with handshake
-            // return result.nonce
-            return ""
+            // Request an Assertion Start Handshake from Passage server
+            let startRequest = AuthenticateWebAuthnStartWithTransactionRequest(
+                transactionId: transactionId
+            )
+            let startResponse = try await AuthenticateAPI.authenticateWebauthnStartWithTransaction(
+                appId: appId,
+                authenticateWebAuthnStartWithTransactionRequest: startRequest
+            )
+            // Use the Assertion Start Handshake to prompt the app user to select a passkey
+            let assertionData = try Utilities.convertAuthenticationStartResponse(startResponse)
+            let authController = PasskeyAuthorizationController()
+            let credential = try await authController.requestPasskeyAssertion(
+                assertionData: assertionData
+            )
+            // Send the Credential Handshake Response to Passage server
+            let handshakeResponse = try Utilities.convertAssertionCredential(credential)
+            let finishRequest = AuthenticateWebAuthnFinishWithTransactionRequest(
+                handshakeId: startResponse.handshake.id,
+                handshakeResponse: handshakeResponse,
+                transactionId: transactionId
+            )
+            let finishResponse = try await AuthenticateAPI.authenticateWebauthnFinishWithTransaction(
+                appId: appId,
+                authenticateWebAuthnFinishWithTransactionRequest: finishRequest
+            )
+            // If successful, Passage server will return a nonce.
+            return finishResponse.nonce
         }
         
         public static func requestAutoFill(in window: PasskeyAutoFillWindow, completion: @escaping (String?, Error?) -> Void) {

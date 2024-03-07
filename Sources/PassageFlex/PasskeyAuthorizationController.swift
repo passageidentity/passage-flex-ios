@@ -8,6 +8,13 @@ internal struct PasskeyRegistrationData {
 }
 
 @available(iOS 16.0, *)
+internal struct PasskeyAssertionData {
+    let relyingPartyIdentifier: String
+    let challenge: Data
+    let credentialIds: [ASAuthorizationPlatformPublicKeyCredentialDescriptor]?
+}
+
+@available(iOS 16.0, *)
 @available(macOS 12.0, *)
 @available(tvOS 16.0, *)
 internal class PasskeyAuthorizationController:
@@ -57,19 +64,20 @@ internal class PasskeyAuthorizationController:
     }
     
     internal func requestPasskeyAssertion(
-        relyingPartyIdentifier: String,
-        challenge: Data,
-        credentialId: ASAuthorizationPlatformPublicKeyCredentialDescriptor? = nil
+        assertionData: PasskeyAssertionData
     ) async throws -> ASAuthorizationPlatformPublicKeyCredentialAssertion {
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(
-            relyingPartyIdentifier: relyingPartyIdentifier
+            relyingPartyIdentifier: assertionData.relyingPartyIdentifier
         )
         let assertionRequest = publicKeyCredentialProvider
             .createCredentialAssertionRequest(
-                challenge: challenge
+                challenge: assertionData.challenge
             )
-        if let credentialId {
-            assertionRequest.allowedCredentials = [credentialId]
+        // Setting `allowedeCredentials` lets us specify which account the offered passkeys
+        // should be tied to.
+        // If this is not set, iOS will show all of the potential accounts' passkeys.
+        if let credentialIds = assertionData.credentialIds {
+            assertionRequest.allowedCredentials = credentialIds
         }
         let authController = ASAuthorizationController(
             authorizationRequests: [ assertionRequest ]

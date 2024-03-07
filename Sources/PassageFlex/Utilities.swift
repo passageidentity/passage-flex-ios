@@ -65,7 +65,7 @@ internal struct Utilities {
         )
     }
     
-    @available(iOS 15.0, *)
+    @available(iOS 16.0, *)
     internal static func convertRegistrationCredential(
         _ credential: ASAuthorizationPlatformPublicKeyCredentialRegistration
     ) throws -> CredentialCreationResponse1 {
@@ -75,6 +75,48 @@ internal struct Utilities {
         )
         let credentialId = credential.credentialID.encodeBase64UrlSafeString()
         return CredentialCreationResponse1(
+            id: credentialId,
+            rawId: credentialId,
+            response: response,
+            type: "public-key"
+        )
+    }
+    
+    @available(iOS 16.0, *)
+    internal static func convertAuthenticationStartResponse(
+        _ response: AuthenticateWebAuthnStartWithTransactionResponse
+    ) throws -> PasskeyAssertionData {
+        let publicKey = response.handshake.challenge.publicKey
+        let credentialIds = publicKey.allowCredentials?
+            .compactMap { $0.id.decodeBase64UrlSafeString() }
+            .map { ASAuthorizationPlatformPublicKeyCredentialDescriptor(
+                credentialID: $0
+            ) }
+        guard
+            let rpId = publicKey.rpId,
+            let challenge = publicKey.challenge.decodeBase64UrlSafeString()
+        else {
+            // TODO: Better error
+            throw PassagePasskeyAuthorizationError.unknown
+        }
+        return PasskeyAssertionData(
+            relyingPartyIdentifier: rpId,
+            challenge: challenge,
+            credentialIds: credentialIds)
+    }
+    
+    @available(iOS 16.0, *)
+    internal static func convertAssertionCredential(
+        _ credential: ASAuthorizationPlatformPublicKeyCredentialAssertion
+    ) throws -> CredentialAssertionResponse {
+        let response = CredentialAssertionResponseResponse(
+            authenticatorData: credential.rawAuthenticatorData.base64EncodedString(),
+            clientDataJSON: credential.rawClientDataJSON.base64EncodedString(),
+            signature: credential.signature.base64EncodedString(),
+            userHandle: credential.userID.base64EncodedString()
+        )
+        let credentialId = credential.credentialID.encodeBase64UrlSafeString()
+        return CredentialAssertionResponse(
             id: credentialId,
             rawId: credentialId,
             response: response,
