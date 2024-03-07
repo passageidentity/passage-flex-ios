@@ -12,13 +12,19 @@ let package = Package(
             name: "PassageFlex",
             targets: ["PassageFlex"]),
     ],
+    dependencies: [
+        // Dependencies declare other packages that this package depends on.
+        .package(url: "https://github.com/Flight-School/AnyCodable", .upToNextMajor(from: "0.6.1")),
+    ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "PassageFlex"),
+            name: "PassageFlex",
+            dependencies: ["AnyCodable"]
+        ),
         .testTarget(
             name: "PassageFlexTests",
-            dependencies: ["PassageFlex"]),
+            dependencies: ["PassageFlex", "AnyCodable"]),
     ]
 )
