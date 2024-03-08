@@ -1,8 +1,6 @@
 import Foundation
 
-@available(iOS 16.0, *)
-@available(macOS 12.0, *)
-@available(tvOS 16.0, *)
+@available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
 internal struct PassagePasskeyAuthentication {
     
     internal static func register(

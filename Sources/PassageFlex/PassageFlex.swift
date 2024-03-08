@@ -29,10 +29,7 @@ public struct PassageFlex {
         /// - Throws: `PassagePasskeyAuthorizationError` when Apple passkey authorization fails.
         /// `PassageRegisterPasskeyServerError` when the Passage server returns an error.
         /// `PassageConfigurationError` when there was a problem with your app's configuration.
-        @available(iOS 16.0, *)
-        @available(macOS 12.0, *)
-        @available(tvOS 16.0, *)
-        @available(visionOS 1.0, *)
+        @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
         public static func register(
             with transactionId: String,
             authenticatorAttachment: AuthenticatorAttachment = .platform
@@ -58,10 +55,7 @@ public struct PassageFlex {
         /// - Throws: `PassagePasskeyAuthorizationError` when Apple passkey authorization fails.
         /// `PassageAuthenticatePasskeyServerError` when the Passage server returns an error.
         /// `PassageConfigurationError` when there was a problem with your app's configuration.
-        @available(iOS 16.0, *)
-        @available(macOS 12.0, *)
-        @available(tvOS 16.0, *)
-        @available(visionOS 1.0, *)
+        @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
         public static func authenticate(with transactionId: String? = nil) async throws -> String {
             let nonce = try await PassagePasskeyAuthentication.authenticate(
                 with: transactionId
@@ -69,20 +63,26 @@ public struct PassageFlex {
             return nonce
         }
         
-        @available(iOS 16.0, *)
-        @available(macOS 12.0, *)
-        @available(tvOS 16.0, *)
-        @available(visionOS 1.0, *)
+        /// Initiaties a request for passkey AutoFill.
+        ///
+        /// Call this method on initial view load. When the user taps your designated UITextField, the AutoFill passkey suggestion
+        /// will appear (if the user has a passkey). To designate a UITextField, set its `textContentType` to `username`.
+        ///
+        /// - Parameters:
+        ///   - transactionId: (Optional) The Passage transaction id provided by your app's server.
+        ///
+        /// - Returns: A single-use "nonce" from Passage server to be exchanged for an authentication token on
+        /// your app's server.
+        ///
+        /// - Throws: `PassagePasskeyAuthorizationError` when Apple passkey authorization fails.
+        /// `PassageAuthenticatePasskeyServerError` when the Passage server returns an error.
+        /// `PassageConfigurationError` when there was a problem with your app's configuration.
+        @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
         public static func requestAutoFill(in window: PasskeyAutoFillWindow, completion: @escaping (String?, Error?) -> Void) {
-            do {
-                let appId = try Utilities.getAppId()
-                Task {
-                    // let challenge = POST /v1/apps/{app_id}/register/transactions/authenticate/start WITHOUT transactionId
-                    // let handshake = PasskeyService.registrationRequest(challenge)
-                }
-            } catch {
-                completion(nil, error)
-            }
+            PassagePasskeyAuthentication.requestAutoFill(
+                in: window,
+                completion: completion
+            )
         }
         
     }
