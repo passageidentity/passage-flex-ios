@@ -8,6 +8,9 @@ internal struct PasskeyRegistrationData {
 }
 
 @available(iOS 16.0, *)
+@available(macOS 12.0, *)
+@available(tvOS 16.0, *)
+@available(visionOS 1.0, *)
 internal struct PasskeyAssertionData {
     let relyingPartyIdentifier: String
     let challenge: Data
@@ -17,6 +20,7 @@ internal struct PasskeyAssertionData {
 @available(iOS 16.0, *)
 @available(macOS 12.0, *)
 @available(tvOS 16.0, *)
+@available(visionOS 1.0, *)
 internal class PasskeyAuthorizationController:
     NSObject,
     ASAuthorizationControllerDelegate,
@@ -39,6 +43,7 @@ internal class PasskeyAuthorizationController:
     
     private var passkeyAutoFillWindow: PasskeyAutoFillWindow?
     
+    // TODO: Handle cross platform request.
     internal func requestPasskeyRegistration(
         registrationData: PasskeyRegistrationData
     ) async throws -> ASAuthorizationPlatformPublicKeyCredentialRegistration {
@@ -92,16 +97,15 @@ internal class PasskeyAuthorizationController:
     }
     
     internal func requestPasskeyAssertionAutoFill (
-        relyingPartyIdentifier: String,
-        challenge: Data,
+        assertionData: PasskeyAssertionData,
         window: PasskeyAutoFillWindow
     ) async throws -> ASAuthorizationPlatformPublicKeyCredentialAssertion {
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(
-            relyingPartyIdentifier: relyingPartyIdentifier
+            relyingPartyIdentifier: assertionData.relyingPartyIdentifier
         )
         let assertionRequest = publicKeyCredentialProvider
             .createCredentialAssertionRequest(
-                challenge: challenge
+                challenge: assertionData.challenge
             )
         let authController = ASAuthorizationController(
             authorizationRequests: [ assertionRequest ]
