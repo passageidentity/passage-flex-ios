@@ -19,16 +19,15 @@ internal struct PassagePasskeyAuthentication {
             registerWebAuthnStartWithTransactionRequest: startRequest
         )
         // Use the Registration Start Handshake to prompt the app user to create a passkey
-        let registrationData = try Utilities.convertRegistrationStartResponse(startResponse)
+        let registrationRequest = try PasskeyRegistrationRequest.from(startResponse)
         let authController = PasskeyAuthorizationController()
         let credential = try await authController.requestPasskeyRegistration(
-            registrationData: registrationData
+            registrationRequest: registrationRequest
         )
         // Send the new Credential Handshake Response to Passage server
-        let handshakeResponse = try Utilities.convertRegistrationCredential(credential)
         let finishRequest = RegisterWebAuthnFinishWithTransactionRequest(
             handshakeId: startResponse.handshake.id,
-            handshakeResponse: handshakeResponse,
+            handshakeResponse: credential.response(),
             transactionId: startRequest.transactionId
         )
         let finishResponse = try await RegisterAPI.registerWebauthnFinishWithTransaction(
@@ -51,16 +50,15 @@ internal struct PassagePasskeyAuthentication {
             authenticateWebAuthnStartWithTransactionRequest: startRequest
         )
         // Use the Assertion Start Handshake to prompt the app user to select a passkey
-        let assertionData = try Utilities.convertAuthenticationStartResponse(startResponse)
+        let assertionRequest = try PasskeyAssertionRequest.from(startResponse)
         let authController = PasskeyAuthorizationController()
         let credential = try await authController.requestPasskeyAssertion(
-            assertionData: assertionData
+            assertionRequest: assertionRequest
         )
         // Send the Credential Handshake Response to Passage server
-        let handshakeResponse = try Utilities.convertAssertionCredential(credential)
         let finishRequest = AuthenticateWebAuthnFinishWithTransactionRequest(
             handshakeId: startResponse.handshake.id,
-            handshakeResponse: handshakeResponse,
+            handshakeResponse: credential.response(),
             transactionId: transactionId
         )
         let finishResponse = try await AuthenticateAPI.authenticateWebauthnFinishWithTransaction(
@@ -88,22 +86,17 @@ internal struct PassagePasskeyAuthentication {
                     )
                 // Use the Assertion Start Handshake to prompt the app user to select the
                 // passkey provided in the keyboard autofill.
-                let assertionData = try Utilities
-                    .convertAuthenticationStartResponse(startResponse)
+                let assertionRequest = try PasskeyAssertionRequest.from(startResponse)
                 let authController = PasskeyAuthorizationController()
-                
-                // TODO: Check for memory leak here if operation never completes.
                 let credential = try await authController
                     .requestPasskeyAssertionAutoFill(
-                        assertionData: assertionData,
+                        assertionRequest: assertionRequest,
                         window: window
                     )
-                
                 // Send the Credential Handshake Response to Passage server
-                let handshakeResponse = try Utilities.convertAssertionCredential(credential)
                 let finishRequest = AuthenticateWebAuthnFinishWithTransactionRequest(
                     handshakeId: startResponse.handshake.id,
-                    handshakeResponse: handshakeResponse
+                    handshakeResponse: credential.response()
                 )
                 let finishResponse = try await AuthenticateAPI
                     .authenticateWebauthnFinishWithTransaction(

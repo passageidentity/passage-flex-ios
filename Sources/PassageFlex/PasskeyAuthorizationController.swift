@@ -1,35 +1,10 @@
 import AuthenticationServices
 
-internal struct PasskeyRegistrationData {
-    let relyingPartyIdentifier: String
-    let challenge: Data
-    let userName: String
-    let userId: Data
-}
-
-@available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
-internal struct PasskeyAssertionData {
-    let relyingPartyIdentifier: String
-    let challenge: Data
-    let credentialIds: [ASAuthorizationPlatformPublicKeyCredentialDescriptor]?
-}
-
 @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
 internal class PasskeyAuthorizationController:
     NSObject,
-    ASAuthorizationControllerDelegate,
-    ASAuthorizationControllerPresentationContextProviding
+    ASAuthorizationControllerDelegate
 {
-    
-    private typealias RegistrationCredentialContinuation = CheckedContinuation<
-        ASAuthorizationPlatformPublicKeyCredentialRegistration,
-        Error
-    >
-    
-    private typealias AssertionCredentialContinuation = CheckedContinuation<
-        ASAuthorizationPlatformPublicKeyCredentialAssertion,
-        Error
-    >
     
     private var registrationCredentialContinuation: RegistrationCredentialContinuation?
     
@@ -37,21 +12,20 @@ internal class PasskeyAuthorizationController:
     
     private var passkeyAutoFillWindow: PasskeyAutoFillWindow?
     
-    // TODO: Handle cross platform request.
     internal func requestPasskeyRegistration(
-        registrationData: PasskeyRegistrationData
+        registrationRequest: PasskeyRegistrationRequest
     ) async throws -> ASAuthorizationPlatformPublicKeyCredentialRegistration {
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(
-            relyingPartyIdentifier: registrationData.relyingPartyIdentifier
+            relyingPartyIdentifier: registrationRequest.relyingPartyIdentifier
         )
-        let registrationRequest = publicKeyCredentialProvider
+        let authRegistrationRequest = publicKeyCredentialProvider
             .createCredentialRegistrationRequest(
-                challenge: registrationData.challenge,
-                name: registrationData.userName,
-                userID: registrationData.userId
+                challenge: registrationRequest.challenge,
+                name: registrationRequest.userName,
+                userID: registrationRequest.userId
             )
         let authController = ASAuthorizationController(
-            authorizationRequests: [ registrationRequest ]
+            authorizationRequests: [ authRegistrationRequest ]
         )
         authController.delegate = self
         authController.performRequests()
@@ -63,51 +37,26 @@ internal class PasskeyAuthorizationController:
     }
     
     internal func requestPasskeyAssertion(
-        assertionData: PasskeyAssertionData
+        assertionRequest: PasskeyAssertionRequest
     ) async throws -> ASAuthorizationPlatformPublicKeyCredentialAssertion {
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(
-            relyingPartyIdentifier: assertionData.relyingPartyIdentifier
+            relyingPartyIdentifier: assertionRequest.relyingPartyIdentifier
         )
-        let assertionRequest = publicKeyCredentialProvider
+        let authAssertionRequest = publicKeyCredentialProvider
             .createCredentialAssertionRequest(
-                challenge: assertionData.challenge
+                challenge: assertionRequest.challenge
             )
         // Setting `allowedCredentials` lets us specify which account the offered passkeys
         // should be tied to.
         // If this is not set, iOS will show all of the potential accounts' passkeys.
-        if let credentialIds = assertionData.credentialIds {
-            assertionRequest.allowedCredentials = credentialIds
+        if let credentialIds = assertionRequest.credentialIds {
+            authAssertionRequest.allowedCredentials = credentialIds
         }
         let authController = ASAuthorizationController(
-            authorizationRequests: [ assertionRequest ]
+            authorizationRequests: [ authAssertionRequest ]
         )
         authController.delegate = self
         authController.performRequests()
-        return try await withCheckedThrowingContinuation(
-            { [weak self] (continuation: AssertionCredentialContinuation) in
-                self?.assertionCredentialContinuation = continuation
-            }
-        )
-    }
-    
-    internal func requestPasskeyAssertionAutoFill (
-        assertionData: PasskeyAssertionData,
-        window: PasskeyAutoFillWindow
-    ) async throws -> ASAuthorizationPlatformPublicKeyCredentialAssertion {
-        let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(
-            relyingPartyIdentifier: assertionData.relyingPartyIdentifier
-        )
-        let assertionRequest = publicKeyCredentialProvider
-            .createCredentialAssertionRequest(
-                challenge: assertionData.challenge
-            )
-        let authController = ASAuthorizationController(
-            authorizationRequests: [ assertionRequest ]
-        )
-        authController.delegate = self
-        authController.presentationContextProvider = self
-        passkeyAutoFillWindow = window
-        authController.performAutoFillAssistedRequests()
         return try await withCheckedThrowingContinuation(
             { [weak self] (continuation: AssertionCredentialContinuation) in
                 self?.assertionCredentialContinuation = continuation
@@ -144,6 +93,38 @@ internal class PasskeyAuthorizationController:
             }
         }
         assertionCredentialContinuation?.resume(throwing: passageError)
+    }
+    
+}
+
+@available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
+extension PasskeyAuthorizationController:
+    ASAuthorizationControllerPresentationContextProviding
+{
+    
+    internal func requestPasskeyAssertionAutoFill (
+        assertionRequest: PasskeyAssertionRequest,
+        window: PasskeyAutoFillWindow
+    ) async throws -> ASAuthorizationPlatformPublicKeyCredentialAssertion {
+        let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(
+            relyingPartyIdentifier: assertionRequest.relyingPartyIdentifier
+        )
+        let authAssertionRequest = publicKeyCredentialProvider
+            .createCredentialAssertionRequest(
+                challenge: assertionRequest.challenge
+            )
+        let authController = ASAuthorizationController(
+            authorizationRequests: [ authAssertionRequest ]
+        )
+        authController.delegate = self
+        authController.presentationContextProvider = self
+        passkeyAutoFillWindow = window
+        authController.performAutoFillAssistedRequests()
+        return try await withCheckedThrowingContinuation(
+            { [weak self] (continuation: AssertionCredentialContinuation) in
+                self?.assertionCredentialContinuation = continuation
+            }
+        )
     }
     
     // MARK: - ASAuthorizationControllerPresentationContextProviding Methods
