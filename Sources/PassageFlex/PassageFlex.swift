@@ -69,14 +69,9 @@ public struct PassageFlex {
         /// will appear (if the user has a passkey). To designate a UITextField, set its `textContentType` to `username`.
         ///
         /// - Parameters:
-        ///   - transactionId: (Optional) The Passage transaction id provided by your app's server.
-        ///
-        /// - Returns: A single-use "nonce" from Passage server to be exchanged for an authentication token on
-        /// your app's server.
-        ///
-        /// - Throws: `PassagePasskeyAuthorizationError` when Apple passkey authorization fails.
-        /// `PassageAuthenticatePasskeyServerError` when the Passage server returns an error.
-        /// `PassageConfigurationError` when there was a problem with your app's configuration.
+        ///   - window: The window where the passkey autofill takes place. Required as an anchor for Apple UI.
+        ///   - completion: Your completion handler. On success, should accept a String for the nonce value.
+        ///   On failure, should catch thrown error.
         @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
         public static func requestAutoFill(in window: PasskeyAutoFillWindow, completion: @escaping (String?, Error?) -> Void) {
             PassagePasskeyAuthentication.requestAutoFill(
