@@ -14,12 +14,12 @@ public struct CredentialCreationResponse: Codable, JSONEncodable, Hashable {
 
     public var authenticatorAttachment: String?
     public var clientExtensionResults: AnyCodable?
-    /** ID is The credential’s identifier. The requirements for the identifier are distinct for each type of credential. It might represent a username for username/password tuples, for example. */
+    /** ID is The credential's identifier. The requirements for the identifier are distinct for each type of credential. It might represent a username for username/password tuples, for example. */
     public var id: String?
     public var rawId: String?
     public var response: CredentialCreationResponseResponse?
     public var transports: [String]?
-    /** Type is the value of the object’s interface object's [[type]] slot, which specifies the credential type represented by this object. This should be type \"public-key\" for Webauthn credentials. */
+    /** Type is the value of the object's interface object's [[type]] slot, which specifies the credential type represented by this object. This should be type \"public-key\" for Webauthn credentials. */
     public var type: String?
 
     public init(authenticatorAttachment: String? = nil, clientExtensionResults: AnyCodable? = nil, id: String? = nil, rawId: String? = nil, response: CredentialCreationResponseResponse? = nil, transports: [String]? = nil, type: String? = nil) {

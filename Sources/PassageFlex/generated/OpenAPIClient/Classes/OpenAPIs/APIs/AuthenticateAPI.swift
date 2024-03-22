@@ -13,47 +13,6 @@ import AnyCodable
 open class AuthenticateAPI {
 
     /**
-     Verify the nonce received from a WebAuthn ceremony
-     
-     - parameter appId: (path) App ID 
-     - parameter body: (body) User Data 
-     - returns: Void
-     */
-    @available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 6.0, *)
-    open class func authenticateVerifyNonce(appId: String, body: Nonce) async throws {
-        return try await authenticateVerifyNonceWithRequestBuilder(appId: appId, body: body).execute().body
-    }
-
-    /**
-     Verify the nonce received from a WebAuthn ceremony
-     - POST /apps/{app_id}/authenticate/verify
-     - Verify the nonce received from a WebAuthn registration or authentication ceremony. This endpoint checks that the nonce for the given application is valid, then returns a success or error message to the caller.
-     - parameter appId: (path) App ID 
-     - parameter body: (body) User Data 
-     - returns: RequestBuilder<Void> 
-     */
-    open class func authenticateVerifyNonceWithRequestBuilder(appId: String, body: Nonce) -> RequestBuilder<Void> {
-        var localVariablePath = "/apps/{app_id}/authenticate/verify"
-        let appIdPreEscape = "\(APIHelper.mapValueToPathItem(appId))"
-        let appIdPostEscape = appIdPreEscape.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? ""
-        localVariablePath = localVariablePath.replacingOccurrences(of: "{app_id}", with: appIdPostEscape, options: .literal, range: nil)
-        let localVariableURLString = OpenAPIClientAPI.basePath + localVariablePath
-        let localVariableParameters = JSONEncodingHelper.encodingParameters(forEncodableObject: body)
-
-        let localVariableUrlComponents = URLComponents(string: localVariableURLString)
-
-        let localVariableNillableHeaders: [String: Any?] = [
-            "Content-Type": "application/json",
-        ]
-
-        let localVariableHeaderParameters = APIHelper.rejectNilHeaders(localVariableNillableHeaders)
-
-        let localVariableRequestBuilder: RequestBuilder<Void>.Type = OpenAPIClientAPI.requestBuilderFactory.getNonDecodableBuilder()
-
-        return localVariableRequestBuilder.init(method: "POST", URLString: (localVariableUrlComponents?.string ?? localVariableURLString), parameters: localVariableParameters, headers: localVariableHeaderParameters, requiresAuthentication: false)
-    }
-
-    /**
      Finish WebAuthn authentication with an optional transaction
      
      - parameter appId: (path) App ID 

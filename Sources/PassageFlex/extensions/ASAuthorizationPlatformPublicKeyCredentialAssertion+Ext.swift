@@ -8,10 +8,10 @@ extension ASAuthorizationPlatformPublicKeyCredentialAssertion {
     /// - Returns: CredentialAssertionResponse
     internal func response() -> CredentialAssertionResponse {
         let response = CredentialAssertionResponseResponse(
-            authenticatorData: rawAuthenticatorData.base64EncodedString(),
-            clientDataJSON: rawClientDataJSON.base64EncodedString(),
-            signature: signature.base64EncodedString(),
-            userHandle: userID.base64EncodedString()
+            authenticatorData: rawAuthenticatorData.encodeBase64UrlSafeString(),
+            clientDataJSON: rawClientDataJSON.encodeBase64UrlSafeString(),
+            signature: signature.encodeBase64UrlSafeString(),
+            userHandle: String(data: userID, encoding: .utf8)
         )
         let credentialId = credentialID.encodeBase64UrlSafeString()
         return CredentialAssertionResponse(

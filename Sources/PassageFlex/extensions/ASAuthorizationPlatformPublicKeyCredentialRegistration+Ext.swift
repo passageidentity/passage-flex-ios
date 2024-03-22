@@ -6,13 +6,13 @@ extension ASAuthorizationPlatformPublicKeyCredentialRegistration {
     /// Converts registration credential into a handshake response formatted for Passage webauthn finish request.
     /// 
     /// - Returns: CredentialCreationResponse1
-    internal func response() -> CredentialCreationResponse1 {
+    internal func response() -> CredentialCreationResponse {
         let response = CredentialCreationResponseResponse(
             attestationObject: rawAttestationObject?.encodeBase64UrlSafeString(),
             clientDataJSON: rawClientDataJSON.encodeBase64UrlSafeString()
         )
         let credentialId = credentialID.encodeBase64UrlSafeString()
-        return CredentialCreationResponse1(
+        return CredentialCreationResponse(
             id: credentialId,
             rawId: credentialId,
             response: response,

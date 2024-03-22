@@ -12,11 +12,11 @@ import AnyCodable
 
 public struct AuthenticateWebAuthnStartWithTransactionResponse: Codable, JSONEncodable, Hashable {
 
-    public var handshake: CredentialAssertionChallenge
+    public var handshake: CredentialAssertionChallenge1
     /** the transaction ID provided for this authentication attempt, null if not provided */
     public var transactionId: String?
 
-    public init(handshake: CredentialAssertionChallenge, transactionId: String? = nil) {
+    public init(handshake: CredentialAssertionChallenge1, transactionId: String? = nil) {
         self.handshake = handshake
         self.transactionId = transactionId
     }
