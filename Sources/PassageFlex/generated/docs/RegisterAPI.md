@@ -131,7 +131,7 @@ Complete a WebAuthn registration and authenticate the user. This endpoint accept
 import OpenAPIClient
 
 let appId = "appId_example" // String | App ID
-let registerWebAuthnFinishRequest = RegisterWebAuthnFinishRequest(handshakeId: "handshakeId_example", handshakeResponse: CredentialCreationResponse1(authenticatorAttachment: "authenticatorAttachment_example", clientExtensionResults: 123, id: "id_example", rawId: "rawId_example", response: CredentialCreationResponse_response(attestationObject: "attestationObject_example", clientDataJSON: "clientDataJSON_example", transports: ["transports_example"]), transports: ["transports_example"], type: "type_example"), userId: "userId_example") // RegisterWebAuthnFinishRequest | WebAuthn Response Data
+let registerWebAuthnFinishRequest = RegisterWebAuthnFinishRequest(handshakeId: "handshakeId_example", handshakeResponse: CredentialCreationResponse(authenticatorAttachment: "authenticatorAttachment_example", clientExtensionResults: 123, id: "id_example", rawId: "rawId_example", response: CredentialCreationResponse_response(attestationObject: "attestationObject_example", clientDataJSON: "clientDataJSON_example", transports: ["transports_example"]), transports: ["transports_example"], type: "type_example"), userId: "userId_example") // RegisterWebAuthnFinishRequest | WebAuthn Response Data
 
 // Finish WebAuthn Registration
 RegisterAPI.registerWebauthnFinish(appId: appId, registerWebAuthnFinishRequest: registerWebAuthnFinishRequest) { (response, error) in
@@ -183,7 +183,7 @@ Complete a WebAuthn registration and authenticate the user via a transaction. Th
 import OpenAPIClient
 
 let appId = "appId_example" // String | App ID
-let registerWebAuthnFinishWithTransactionRequest = RegisterWebAuthnFinishWithTransactionRequest(handshakeId: "handshakeId_example", handshakeResponse: CredentialCreationResponse1(authenticatorAttachment: "authenticatorAttachment_example", clientExtensionResults: 123, id: "id_example", rawId: "rawId_example", response: CredentialCreationResponse_response(attestationObject: "attestationObject_example", clientDataJSON: "clientDataJSON_example", transports: ["transports_example"]), transports: ["transports_example"], type: "type_example"), transactionId: "transactionId_example") // RegisterWebAuthnFinishWithTransactionRequest | 
+let registerWebAuthnFinishWithTransactionRequest = RegisterWebAuthnFinishWithTransactionRequest(handshakeId: "handshakeId_example", handshakeResponse: CredentialCreationResponse(authenticatorAttachment: "authenticatorAttachment_example", clientExtensionResults: 123, id: "id_example", rawId: "rawId_example", response: CredentialCreationResponse_response(attestationObject: "attestationObject_example", clientDataJSON: "clientDataJSON_example", transports: ["transports_example"]), transports: ["transports_example"], type: "type_example"), transactionId: "transactionId_example") // RegisterWebAuthnFinishWithTransactionRequest | 
 
 // Finish WebAuthn registration with a transaction
 RegisterAPI.registerWebauthnFinishWithTransaction(appId: appId, registerWebAuthnFinishWithTransactionRequest: registerWebAuthnFinishWithTransactionRequest) { (response, error) in

@@ -4,62 +4,9 @@ All URIs are relative to *https://auth.passage.id/v1*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**authenticateVerifyNonce**](AuthenticateAPI.md#authenticateverifynonce) | **POST** /apps/{app_id}/authenticate/verify | Verify the nonce received from a WebAuthn ceremony
 [**authenticateWebauthnFinishWithTransaction**](AuthenticateAPI.md#authenticatewebauthnfinishwithtransaction) | **POST** /apps/{app_id}/authenticate/transactions/webauthn/finish | Finish WebAuthn authentication with an optional transaction
 [**authenticateWebauthnStartWithTransaction**](AuthenticateAPI.md#authenticatewebauthnstartwithtransaction) | **POST** /apps/{app_id}/authenticate/transactions/webauthn/start | Start WebAuthn authentication with an optional transaction
 
-
-# **authenticateVerifyNonce**
-```swift
-    open class func authenticateVerifyNonce(appId: String, body: Nonce, completion: @escaping (_ data: Void?, _ error: Error?) -> Void)
-```
-
-Verify the nonce received from a WebAuthn ceremony
-
-Verify the nonce received from a WebAuthn registration or authentication ceremony. This endpoint checks that the nonce for the given application is valid, then returns a success or error message to the caller.
-
-### Example
-```swift
-// The following code samples are still beta. For any issue, please report via http://github.com/OpenAPITools/openapi-generator/issues/new
-import OpenAPIClient
-
-let appId = "appId_example" // String | App ID
-let body = Nonce(nonce: "nonce_example") // Nonce | User Data
-
-// Verify the nonce received from a WebAuthn ceremony
-AuthenticateAPI.authenticateVerifyNonce(appId: appId, body: body) { (response, error) in
-    guard error == nil else {
-        print(error)
-        return
-    }
-
-    if (response) {
-        dump(response)
-    }
-}
-```
-
-### Parameters
-
-Name | Type | Description  | Notes
-------------- | ------------- | ------------- | -------------
- **appId** | **String** | App ID | 
- **body** | **Nonce** | User Data | 
-
-### Return type
-
-Void (empty response body)
-
-### Authorization
-
-No authorization required
-
-### HTTP request headers
-
- - **Content-Type**: application/json
- - **Accept**: application/json
-
-[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **authenticateWebauthnFinishWithTransaction**
 ```swift

@@ -27,7 +27,6 @@ All URIs are relative to *https://auth.passage.id/v1*
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *AppsAPI* | [**getApp**](docs/AppsAPI.md#getapp) | **GET** /apps/{app_id} | Get App
-*AuthenticateAPI* | [**authenticateVerifyNonce**](docs/AuthenticateAPI.md#authenticateverifynonce) | **POST** /apps/{app_id}/authenticate/verify | Verify the nonce received from a WebAuthn ceremony
 *AuthenticateAPI* | [**authenticateWebauthnFinishWithTransaction**](docs/AuthenticateAPI.md#authenticatewebauthnfinishwithtransaction) | **POST** /apps/{app_id}/authenticate/transactions/webauthn/finish | Finish WebAuthn authentication with an optional transaction
 *AuthenticateAPI* | [**authenticateWebauthnStartWithTransaction**](docs/AuthenticateAPI.md#authenticatewebauthnstartwithtransaction) | **POST** /apps/{app_id}/authenticate/transactions/webauthn/start | Start WebAuthn authentication with an optional transaction
 *CurrentuserAPI* | [**deleteCurrentuserDevice**](docs/CurrentuserAPI.md#deletecurrentuserdevice) | **DELETE** /apps/{app_id}/currentuser/devices/{device_id} | Revoke Device
@@ -89,6 +88,7 @@ Class | Method | HTTP request | Description
  - [CreateUserParams](docs/CreateUserParams.md)
  - [Credential](docs/Credential.md)
  - [CredentialAssertionChallenge](docs/CredentialAssertionChallenge.md)
+ - [CredentialAssertionChallenge1](docs/CredentialAssertionChallenge1.md)
  - [CredentialAssertionResponse](docs/CredentialAssertionResponse.md)
  - [CredentialAssertionResponseResponse](docs/CredentialAssertionResponseResponse.md)
  - [CredentialCreation](docs/CredentialCreation.md)
@@ -100,7 +100,6 @@ Class | Method | HTTP request | Description
  - [CredentialCreationPublicKeyRp](docs/CredentialCreationPublicKeyRp.md)
  - [CredentialCreationPublicKeyUser](docs/CredentialCreationPublicKeyUser.md)
  - [CredentialCreationResponse](docs/CredentialCreationResponse.md)
- - [CredentialCreationResponse1](docs/CredentialCreationResponse1.md)
  - [CredentialCreationResponseResponse](docs/CredentialCreationResponseResponse.md)
  - [CurrentUser](docs/CurrentUser.md)
  - [CurrentUserDevice](docs/CurrentUserDevice.md)
@@ -135,6 +134,8 @@ Class | Method | HTTP request | Description
  - [Model403Error](docs/Model403Error.md)
  - [Model404Code](docs/Model404Code.md)
  - [Model404Error](docs/Model404Error.md)
+ - [Model409Code](docs/Model409Code.md)
+ - [Model409Error](docs/Model409Error.md)
  - [Model500Code](docs/Model500Code.md)
  - [Model500Error](docs/Model500Error.md)
  - [Nonce](docs/Nonce.md)
@@ -142,6 +143,9 @@ Class | Method | HTTP request | Description
  - [OpenIdConfiguration](docs/OpenIdConfiguration.md)
  - [OtpAuthMethod](docs/OtpAuthMethod.md)
  - [ProtocolCredentialAssertion](docs/ProtocolCredentialAssertion.md)
+ - [ProtocolCredentialAssertion1](docs/ProtocolCredentialAssertion1.md)
+ - [ProtocolCredentialAssertion1PublicKey](docs/ProtocolCredentialAssertion1PublicKey.md)
+ - [ProtocolCredentialAssertion1PublicKeyAllowCredentialsInner](docs/ProtocolCredentialAssertion1PublicKeyAllowCredentialsInner.md)
  - [ProtocolCredentialAssertionPublicKey](docs/ProtocolCredentialAssertionPublicKey.md)
  - [ProtocolCredentialAssertionPublicKeyAllowCredentialsInner](docs/ProtocolCredentialAssertionPublicKeyAllowCredentialsInner.md)
  - [RefreshAuthTokenRequest](docs/RefreshAuthTokenRequest.md)

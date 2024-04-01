@@ -13,10 +13,10 @@ import AnyCodable
 public struct RegisterWebAuthnFinishRequest: Codable, JSONEncodable, Hashable {
 
     public var handshakeId: String
-    public var handshakeResponse: CredentialCreationResponse1
+    public var handshakeResponse: CredentialCreationResponse
     public var userId: String
 
-    public init(handshakeId: String, handshakeResponse: CredentialCreationResponse1, userId: String) {
+    public init(handshakeId: String, handshakeResponse: CredentialCreationResponse, userId: String) {
         self.handshakeId = handshakeId
         self.handshakeResponse = handshakeResponse
         self.userId = userId

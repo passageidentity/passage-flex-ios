@@ -12,10 +12,10 @@ import AnyCodable
 
 public struct LoginWebAuthnStartResponse: Codable, JSONEncodable, Hashable {
 
-    public var handshake: CredentialAssertionChallenge
+    public var handshake: CredentialAssertionChallenge1
     public var user: User?
 
-    public init(handshake: CredentialAssertionChallenge, user: User? = nil) {
+    public init(handshake: CredentialAssertionChallenge1, user: User? = nil) {
         self.handshake = handshake
         self.user = user
     }

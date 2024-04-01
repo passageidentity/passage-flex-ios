@@ -27,7 +27,7 @@ internal struct PasskeyRegistrationRequest {
         return PasskeyRegistrationRequest(
             relyingPartyIdentifier: rpId,
             challenge: challenge,
-            userName: userId,
+            userName: userName,
             userId: Data(userId.utf8)
         )
     }

@@ -38,6 +38,7 @@ OpenAPIClient/Classes/OpenAPIs/Models/AuthenticatorAttachment.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CreateUserParams.swift
 OpenAPIClient/Classes/OpenAPIs/Models/Credential.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CredentialAssertionChallenge.swift
+OpenAPIClient/Classes/OpenAPIs/Models/CredentialAssertionChallenge1.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CredentialAssertionResponse.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CredentialAssertionResponseResponse.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CredentialCreation.swift
@@ -49,7 +50,6 @@ OpenAPIClient/Classes/OpenAPIs/Models/CredentialCreationPublicKeyPubKeyCredParam
 OpenAPIClient/Classes/OpenAPIs/Models/CredentialCreationPublicKeyRp.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CredentialCreationPublicKeyUser.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CredentialCreationResponse.swift
-OpenAPIClient/Classes/OpenAPIs/Models/CredentialCreationResponse1.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CredentialCreationResponseResponse.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CurrentUser.swift
 OpenAPIClient/Classes/OpenAPIs/Models/CurrentUserDevice.swift
@@ -84,6 +84,8 @@ OpenAPIClient/Classes/OpenAPIs/Models/Model403Code.swift
 OpenAPIClient/Classes/OpenAPIs/Models/Model403Error.swift
 OpenAPIClient/Classes/OpenAPIs/Models/Model404Code.swift
 OpenAPIClient/Classes/OpenAPIs/Models/Model404Error.swift
+OpenAPIClient/Classes/OpenAPIs/Models/Model409Code.swift
+OpenAPIClient/Classes/OpenAPIs/Models/Model409Error.swift
 OpenAPIClient/Classes/OpenAPIs/Models/Model500Code.swift
 OpenAPIClient/Classes/OpenAPIs/Models/Model500Error.swift
 OpenAPIClient/Classes/OpenAPIs/Models/Nonce.swift
@@ -91,6 +93,9 @@ OpenAPIClient/Classes/OpenAPIs/Models/OneTimePasscodeResponse.swift
 OpenAPIClient/Classes/OpenAPIs/Models/OpenIdConfiguration.swift
 OpenAPIClient/Classes/OpenAPIs/Models/OtpAuthMethod.swift
 OpenAPIClient/Classes/OpenAPIs/Models/ProtocolCredentialAssertion.swift
+OpenAPIClient/Classes/OpenAPIs/Models/ProtocolCredentialAssertion1.swift
+OpenAPIClient/Classes/OpenAPIs/Models/ProtocolCredentialAssertion1PublicKey.swift
+OpenAPIClient/Classes/OpenAPIs/Models/ProtocolCredentialAssertion1PublicKeyAllowCredentialsInner.swift
 OpenAPIClient/Classes/OpenAPIs/Models/ProtocolCredentialAssertionPublicKey.swift
 OpenAPIClient/Classes/OpenAPIs/Models/ProtocolCredentialAssertionPublicKeyAllowCredentialsInner.swift
 OpenAPIClient/Classes/OpenAPIs/Models/RefreshAuthTokenRequest.swift
@@ -142,6 +147,7 @@ docs/AuthenticatorAttachment.md
 docs/CreateUserParams.md
 docs/Credential.md
 docs/CredentialAssertionChallenge.md
+docs/CredentialAssertionChallenge1.md
 docs/CredentialAssertionResponse.md
 docs/CredentialAssertionResponseResponse.md
 docs/CredentialCreation.md
@@ -153,7 +159,6 @@ docs/CredentialCreationPublicKeyPubKeyCredParamsInner.md
 docs/CredentialCreationPublicKeyRp.md
 docs/CredentialCreationPublicKeyUser.md
 docs/CredentialCreationResponse.md
-docs/CredentialCreationResponse1.md
 docs/CredentialCreationResponseResponse.md
 docs/CurrentUser.md
 docs/CurrentUserDevice.md
@@ -192,6 +197,8 @@ docs/Model403Code.md
 docs/Model403Error.md
 docs/Model404Code.md
 docs/Model404Error.md
+docs/Model409Code.md
+docs/Model409Error.md
 docs/Model500Code.md
 docs/Model500Error.md
 docs/Nonce.md
@@ -202,6 +209,9 @@ docs/OpenIDAPI.md
 docs/OpenIdConfiguration.md
 docs/OtpAuthMethod.md
 docs/ProtocolCredentialAssertion.md
+docs/ProtocolCredentialAssertion1.md
+docs/ProtocolCredentialAssertion1PublicKey.md
+docs/ProtocolCredentialAssertion1PublicKeyAllowCredentialsInner.md
 docs/ProtocolCredentialAssertionPublicKey.md
 docs/ProtocolCredentialAssertionPublicKeyAllowCredentialsInner.md
 docs/RefreshAuthTokenRequest.md
