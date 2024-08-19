@@ -5,10 +5,9 @@ internal struct PassagePasskeyAuthentication {
     
     internal static func register(
         with transactionId: String,
-        authenticatorAttachment: AuthenticatorAttachment = .platform
+        authenticatorAttachment: AuthenticatorAttachment = .platform,
+        appId: String
     ) async throws -> String {
-        // Get Passage App ID from Passage.plist
-        let appId = try Utilities.getAppId()
         // Request a Registration Start Handshake from Passage server
         let startRequest = RegisterWebAuthnStartWithTransactionRequest(
             transactionId: transactionId,
@@ -38,9 +37,10 @@ internal struct PassagePasskeyAuthentication {
         return finishResponse.nonce
     }
 
-    internal static func authenticate(with transactionId: String? = nil) async throws -> String {
-        // Get Passage App ID from Passage.plist
-        let appId = try Utilities.getAppId()
+    internal static func authenticate(
+        with transactionId: String? = nil,
+        appId: String
+    ) async throws -> String {
         // Request an Assertion Start Handshake from Passage server
         let startRequest = AuthenticateWebAuthnStartWithTransactionRequest(
             transactionId: transactionId
@@ -71,12 +71,11 @@ internal struct PassagePasskeyAuthentication {
     
     internal static func requestAutoFill(
         in window: PasskeyAutoFillWindow,
+        appId: String,
         completion: @escaping (String?, Error?) -> Void
     ) {
         Task {
             do {
-                // Get Passage App ID from Passage.plist
-                let appId = try Utilities.getAppId()
                 // Request an Assertion Start Handshake from Passage server
                 let startRequest = AuthenticateWebAuthnStartWithTransactionRequest()
                 let startResponse = try await AuthenticateAPI

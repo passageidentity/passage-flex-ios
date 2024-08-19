@@ -23,7 +23,8 @@ And you can use it like this:
 ```swift
 import PassageFlex
 
-let nonce = try await PassageFlex.Passkey.authenticate()
+let passageFlex = PassageFlex(appId: "YOUR_APP_ID")
+let nonce = try await passageFlex.passkey.authenticate()
 ```
 <br>
 
