@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'PassageFlex'
-  s.version          = ENV['LIB_VERSION'] || '0.1.0' #fallback to major version
+  s.version          = '0.2.0'
   s.summary          = 'Use Passage Flex in your iOS application'
   s.homepage         = 'https://github.com/passageidentity/passage-flex-ios'
   s.license          = { :type => 'MIT', :file => 'LICENSE.md' }

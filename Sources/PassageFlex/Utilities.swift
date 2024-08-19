@@ -26,21 +26,4 @@ internal struct Utilities {
         #endif
     }
     
-    internal static func getAppId() throws -> String {
-        guard
-            let plistPath = Bundle.main.path(forResource: "Passage", ofType: "plist"),
-            let plistData = FileManager.default.contents(atPath: plistPath)
-        else {
-            throw PassageConfigurationError.cannotFindPassagePlist
-        }
-        guard
-            let plistContent = try? PropertyListSerialization
-                .propertyList(from: plistData, format: nil) as? [String: Any],
-            let appId = plistContent["appId"] as? String
-        else {
-            throw PassageConfigurationError.cannotFindAppId
-        }
-        return appId
-    }
-    
 }
