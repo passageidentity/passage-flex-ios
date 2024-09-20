@@ -1,4 +1,4 @@
-<img src="https://storage.googleapis.com/passage-docs/passage-logo-gradient.svg" alt="Passage logo" style="width:250px;"/>
+![Passage Swift](https://storage.googleapis.com/passage-docs/passage-github-banner.png)
 
 ### Native passkey authentication for your iOS app
 ## Welcome!
@@ -29,4 +29,18 @@ let nonce = try await passageFlex.passkey.authenticate()
 <br>
 
 ## Documentation
-To get started using PassageFlex in your iOS app, please visit our [Passage Docs](https://docs.passage.id/mobile/ios/).
+To get started using PassageFlex in your iOS app, please visit our [Passage Flex iOS Docs](https://docs.passage.id/flex/ios/config).
+
+---
+<br />
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: light)" srcset="https://storage.googleapis.com/passage-docs/logo-small-light.pngg" width="150">
+    <source media="(prefers-color-scheme: dark)" srcset="https://storage.googleapis.com/passage-docs/logo-small-dark.png" width="150">
+    <img alt="Passage Logo" src="https://storage.googleapis.com/passage-docs/logo-small-light.png" width="150">
+  </picture>
+</p>
+
+<p align="center">Give customers the passwordless future they deserve. To learn more check out <a href="https://passage.1password.com">passage.1password.com</a></p>
+
+<p align="center">This project is licensed under the MIT license. See the <a href="./LICENSE"> LICENSE</a> file for more info.</p>
