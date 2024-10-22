@@ -63,7 +63,7 @@ let passageFlex = PassageFlex(appId: "YOUR_PASSAGE_APP_ID")
 
 ### Go Passwordless
 
-Find all core functions, user management details, and more implementation guidance on our [Passkey Flex iOS Documentation](https://docs.passage.id/complete/ios/add-passage) page.
+Find all core functions and more implementation guidance on our [Passkey Flex iOS Documentation](https://docs.passage.id/flex/ios/config) page.
 
 ## Support & Feedback
 
