@@ -17,7 +17,7 @@ Use [Passkey Ready](https://docs.passage.id/passkey-ready) to determine if your 
 
 ### In passage-flex-ios
 
-Use passage-swift to implement Passkey Flex in your Swift application to add native passkey authentication in your own authentication flows.
+Use passage-flex-ios to implement Passkey Flex in your iOS application to add native passkey authentication in your own authentication flows.
 
 | Product                                                                                                                                  | Compatible                                                                                                            |
 | ---------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
