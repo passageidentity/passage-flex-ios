@@ -1,9 +1,9 @@
 Pod::Spec.new do |s|
   s.name             = 'PassageFlex'
   s.version          = '0.2.0'
-  s.summary          = 'Passkey Complete for Apple Platforms - Go completely passwordless with a standalone auth solution in your Swift apps with Passage by 1Password'
+  s.summary          = 'Passkey Flex for Apple Platforms - Go completely passwordless with a standalone auth solution in your iOS, MacOS, and tvOS apps with Passage by 1Password'
   s.description      = <<-DESC
-Passkey Complete for Apple Platforms - Go completely passwordless with a standalone auth solution in your Swift apps with Passage by 1Password
+Passkey Flex for Apple Platforms - Go completely passwordless with a standalone auth solution in your iOS, MacOS, and tvOS apps with Passage by 1Password
                        DESC
   s.homepage         = 'http://docs.passage.id/flex'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
