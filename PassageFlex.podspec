@@ -1,10 +1,13 @@
 Pod::Spec.new do |s|
   s.name             = 'PassageFlex'
   s.version          = '0.2.0'
-  s.summary          = 'Use Passage Flex in your iOS application'
-  s.homepage         = 'https://github.com/passageidentity/passage-flex-ios'
-  s.license          = { :type => 'MIT', :file => 'LICENSE.md' }
-  s.author           = { 'Passage Identity, Inc' => 'hello@passage.id' }
+  s.summary          = 'Passkey Flex for Apple Platforms - Go completely passwordless with a standalone auth solution in your iOS, MacOS, and tvOS apps with Passage by 1Password'
+  s.description      = <<-DESC
+Passkey Flex for Apple Platforms - Go completely passwordless with a standalone auth solution in your iOS, MacOS, and tvOS apps with Passage by 1Password
+                       DESC
+  s.homepage         = 'http://docs.passage.id/flex'
+  s.license          = { :type => 'MIT', :file => 'LICENSE' }
+  s.author           = { 'Passage by 1Password' => 'support@passage.id' }
   s.source           = { :git => 'https://github.com/passageidentity/passage-flex-ios.git', :tag => s.version.to_s }
   s.ios.deployment_target = '15.0'
   s.swift_version = '5.0'
