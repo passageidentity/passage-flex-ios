@@ -21,7 +21,8 @@ internal struct PassagePasskeyAuthentication {
         let registrationRequest = try PasskeyRegistrationRequest.from(startResponse)
         let authController = PasskeyAuthorizationController()
         let credential = try await authController.requestPasskeyRegistration(
-            registrationRequest: registrationRequest
+            registrationRequest: registrationRequest,
+            includeSecurityKeyOption: authenticatorAttachment == .crossPlatform
         )
         // Send the new Credential Handshake Response to Passage server
         let finishRequest = RegisterWebAuthnFinishWithTransactionRequest(

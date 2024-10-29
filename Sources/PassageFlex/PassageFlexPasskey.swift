@@ -17,9 +17,7 @@ public class PassageFlexPasskey {
     ///
     /// - Parameters:
     ///   - transactionId: The Passage transaction id provided by your app's server.
-    ///   - authenticatorAttachment: (Optional) The type of authentication that will be used in this
-    ///   WebAuthN flow request. Defaults to `.platform`. Use `.cross-platform` for physical security
-    ///   key registration.
+    ///   - options: (Optional) options configuration for passkey creation
     ///
     /// - Returns: A single-use "nonce" from Passage server to be exchanged for an authentication token on
     /// your app's server.
@@ -30,11 +28,11 @@ public class PassageFlexPasskey {
     @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
     public func register(
         with transactionId: String,
-        authenticatorAttachment: AuthenticatorAttachment = .platform
-    ) async throws -> String {
+        options: PasskeyCreationOptions? = nil
+    ) async throws -> String {        
         let nonce = try await PassagePasskeyAuthentication.register(
             with: transactionId,
-            authenticatorAttachment: authenticatorAttachment,
+            authenticatorAttachment: options?.authenticatorAttachment ?? .platform,
             appId: appId
         )
         return nonce
