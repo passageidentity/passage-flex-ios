@@ -13,21 +13,42 @@ internal class PasskeyAuthorizationController:
     private var passkeyAutoFillWindow: PasskeyAutoFillWindow?
     
     internal func requestPasskeyRegistration(
-        registrationRequest: PasskeyRegistrationRequest
+        registrationRequest: PasskeyRegistrationRequest,
+        includeSecurityKeyOption: Bool = false
     ) async throws -> ASAuthorizationPlatformPublicKeyCredentialRegistration {
         let publicKeyCredentialProvider = ASAuthorizationPlatformPublicKeyCredentialProvider(
             relyingPartyIdentifier: registrationRequest.relyingPartyIdentifier
         )
-        let authRegistrationRequest = publicKeyCredentialProvider
+        let platformRegistrationRequest = publicKeyCredentialProvider
             .createCredentialRegistrationRequest(
                 challenge: registrationRequest.challenge,
                 name: registrationRequest.userName,
                 userID: registrationRequest.userId
             )
-        let authController = ASAuthorizationController(
-            authorizationRequests: [ authRegistrationRequest ]
-        )
+        var requests: [ASAuthorizationRequest] = [ platformRegistrationRequest ]
+       #if os(iOS) || os(macOS)
+       if includeSecurityKeyOption {
+           let securityKeyCredentialProvider = ASAuthorizationSecurityKeyPublicKeyCredentialProvider(
+               relyingPartyIdentifier: registrationRequest.relyingPartyIdentifier
+           )
+           let securityKeyRegistrationRequest = securityKeyCredentialProvider
+               .createCredentialRegistrationRequest(
+                   challenge: registrationRequest.challenge,
+                   displayName: registrationRequest.userName,
+                   name: registrationRequest.userName,
+                   userID: registrationRequest.userId
+               )
+           securityKeyRegistrationRequest.credentialParameters = [
+               ASAuthorizationPublicKeyCredentialParameters(
+                   algorithm: ASCOSEAlgorithmIdentifier.ES256
+               )
+           ]
+           requests.append(securityKeyRegistrationRequest)
+       }
+       #endif
+        let authController = ASAuthorizationController(authorizationRequests: requests)
         authController.delegate = self
+        authController.presentationContextProvider = self
         authController.performRequests()
         return try await withCheckedThrowingContinuation(
             { [weak self] (continuation: RegistrationCredentialContinuation) in

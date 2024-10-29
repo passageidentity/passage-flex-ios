@@ -28,11 +28,11 @@ public class PassageFlexPasskey {
     @available(iOS 16.0, macOS 12.0, tvOS 16.0, visionOS 1.0, *)
     public func register(
         with transactionId: String,
-        options: PasskeyCreationOptions
-    ) async throws -> String {
+        options: PasskeyCreationOptions? = nil
+    ) async throws -> String {        
         let nonce = try await PassagePasskeyAuthentication.register(
             with: transactionId,
-            authenticatorAttachment: options.authenticatorAttachment,
+            authenticatorAttachment: options?.authenticatorAttachment ?? .platform,
             appId: appId
         )
         return nonce

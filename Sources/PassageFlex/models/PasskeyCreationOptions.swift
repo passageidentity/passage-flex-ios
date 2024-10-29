@@ -1,7 +1,7 @@
-struct PasskeyCreationOptions {
-    let authenticatorAttachment: AuthenticatorAttachment
+public struct PasskeyCreationOptions {
+    public let authenticatorAttachment: AuthenticatorAttachment
     
-    init(authenticatorAttachment: AuthenticatorAttachment = .platform) {
+    public init(authenticatorAttachment: AuthenticatorAttachment = .platform) {
         self.authenticatorAttachment = authenticatorAttachment
     }
 }
