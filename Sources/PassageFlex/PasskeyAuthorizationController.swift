@@ -114,6 +114,7 @@ internal class PasskeyAuthorizationController:
             }
         }
         assertionCredentialContinuation?.resume(throwing: passageError)
+        registrationCredentialContinuation?.resume(throwing: passageError)
     }
     
 }
