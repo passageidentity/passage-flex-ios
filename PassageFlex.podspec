@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'PassageFlex'
-  s.version          = '0.3.1'
+  s.version          = '1.0.0'
   s.summary          = 'Passkey Flex for Apple Platforms - Go completely passwordless with a standalone auth solution in your iOS, MacOS, and tvOS apps with Passage by 1Password'
   s.description      = <<-DESC
 Passkey Flex for Apple Platforms - Go completely passwordless with a standalone auth solution in your iOS, MacOS, and tvOS apps with Passage by 1Password
